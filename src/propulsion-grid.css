@@ -1,0 +1,52 @@
+.propulsion-grid {
+  position: relative;
+}
+
+.propulsion-grid .propulsion-grid-container {
+  position: absolute;
+  overflow: hidden;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+}
+
+.propulsion-grid.propulsion-grid-header {
+  height: 30px;
+}
+
+.propulsion-grid.propulsion-grid-details {
+  position: relative;
+}
+
+.propulsion-grid.propulsion-grid-pager {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  right: 300px;
+}
+
+.propulsion-grid.propulsion-grid-details {
+  position: absolute;
+  top: 0px;
+  width: 300px;
+  right: 0px;
+  text-align: right;
+}
+
+.propulsion-grid.propulsion-grid-details div {
+  display: inline-block;
+}
+
+.propulsion-grid.propulsion-grid-pager ul {
+  margin: 0px;
+}
+
+.propulsion-grid.propulsion-grid-nggrid {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  top: 30px;
+  bottom: 0px;
+  overflow: auto;
+}

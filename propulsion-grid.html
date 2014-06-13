@@ -1,12 +1,11 @@
-<div>
-<h3>Hello World and {{config.name}}!!</h3>
-<div>
-	<div>
-		<div><pagination boundary-links="true" total-items="records_total" page="records_page" items-per-page="records_limit" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination></div>
-		<div>
-			<div>Displaying: {{records_start}}-{{records_end}} ({{records_total}})</div>
-			<div>Per Page: <select ng-model="records_limit" ng-options="size for size in pageSizes" ng-change="changePageSize()"></select></div>
-		</div>
+
+<div class="propulsion-grid-container" style="">
+	<div class="propulsion-grid propulsion-grid-header">
+		<div class="propulsion-grid propulsion-grid-pager"><pagination boundary-links="true" total-items="records_total" page="records_page" items-per-page="records_limit" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></pagination></div>
+    <div class="propulsion-grid propulsion-grid-details">
+      <div>Displaying: {{records_start}}-{{records_end}} ({{records_total}})</div>
+      <div>Per Page: <select ng-model="records_limit" ng-options="size for size in pageSizes" ng-change="changePageSize()"></select></div>
+    </div>
 	</div>
-	<div ng-grid="gridConfig" style="height: 100px;"></div>
+	<div ng-grid="gridConfig" class="propulsion-grid propulsion-grid-nggrid"></div>
 </div>
