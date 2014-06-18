@@ -13,6 +13,12 @@
 
 .propulsion-grid.propulsion-grid-header {
   height: 30px;
+  position: relative;
+}
+
+.propulsion-grid.propulsion-grid-header.propulsion-has-search.propulsion-external {
+  height: 70px;
+  position: relative;
 }
 
 .propulsion-grid.propulsion-grid-details {
@@ -21,21 +27,32 @@
 
 .propulsion-grid.propulsion-grid-pager {
   position: absolute;
-  top: 0px;
+  bottom: 0px;
   left: 0px;
   right: 300px;
 }
 
 .propulsion-grid.propulsion-grid-details {
   position: absolute;
-  top: 0px;
+  bottom: 0px;
   width: 300px;
   right: 0px;
   text-align: right;
+  line-height: 25px;
+  vertical-align: middle;
+}
+.propulsion-grid.propulsion-internal {
+  position: absolute;
+  top: 0px;
+  width: 200px;
+  left: 0px;
+  text-align: left;
 }
 
-.propulsion-grid.propulsion-grid-details div {
+.propulsion-grid.propulsion-grid-details>div {
   display: inline-block;
+  line-height: 25px;
+  vertical-align: middle;
 }
 
 .propulsion-grid.propulsion-grid-pager ul {
@@ -46,7 +63,21 @@
   position: absolute;
   left: 0px;
   right: 0px;
-  top: 30px;
+  top: 32px;
   bottom: 0px;
-  overflow: auto;
+  overflow: hidden;
+  border: 1px solid #ddd;
 }
+
+.propulsion-grid.propulsion-grid-nggrid.propulsion-has-search.propulsion-external {
+  top: 70px;
+}
+
+.propulsion-grid.propulsion-search {
+  position: absolute;
+  top: 0px;
+  width: 200px;
+  right: 0px;
+  text-align: right;
+}
+
