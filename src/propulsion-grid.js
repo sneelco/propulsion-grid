@@ -24,6 +24,7 @@ module.directive('propulsionGrid', ['$http', '$compile', '$templateCache', '$loc
       searchQuery: "@",
       gridData: "=",
       selected: "=",
+      actions: "=",
       clickAction: "="
     },
     template: '<div class="propulsion-grid"></div>',
@@ -32,12 +33,16 @@ module.directive('propulsionGrid', ['$http', '$compile', '$templateCache', '$loc
         dir,
         f_char,
         field,
+        actions,
         template,
+        header_template,
+        actions_template,
         endpoint_template,
         rest_endpoint;
 
       //Set our configuration
       scope.config = scope.gridconfig || {};
+      scope.config.actions = scope.actions || scope.config.actions;
       scope.config.queryprefix = scope.queryPrefix || scope.config.queryprefix || '';
       scope.config.limit = scope.config.limit || scope.limitQuery || 'limit';
       scope.config.page = scope.config.page || scope.pageQuery || 'page';
@@ -87,7 +92,6 @@ module.directive('propulsionGrid', ['$http', '$compile', '$templateCache', '$loc
           useExternalFilter: false
         }
       };
-
       //If selected attr is set, enable row selection
       if (scope.selected !== undefined) {
         scope.gridConfig.selectedItems = scope.selected;
@@ -96,6 +100,66 @@ module.directive('propulsionGrid', ['$http', '$compile', '$templateCache', '$loc
         scope.$watch('gridConfig.selectedItems', function (newVal, oldVal) {
           scope.selected = newVal;
         }, true);
+      }
+
+      //Build the action list items
+      scope.build_actions = function (actions) {
+        var i,
+          index,
+          out = '',
+          total = actions.length;
+
+        for (i = 0; i < total; i += 1) {
+          index = i + 1;
+          if (actions[i].name === '') {
+            out += '<li class="divider"></li>';
+          } else {
+            out += '<li><a ng-click="doAction(row.entity, ' + index + ')">' + actions[i].name + '</a></li>';
+          }
+        }
+
+        return out;
+      };
+
+      //Build the header title and/or actions
+      scope.build_header = function (header) {
+        var out,
+          name = header.title || '';
+
+        if (header.action) {
+          out = '<button ng-click="doHeader()"" class="btn btn-default btn-xs">' + name + '</button>';
+        } else {
+          out = name;
+        }
+
+        return out;
+      }
+
+      //If we have actions specified
+      if (scope.config.actions) {
+        //If we have more then one action, build the list items
+        if (scope.config.actions.items.length > 1) {
+          actions = scope.build_actions(scope.config.actions.items.slice(1));
+
+          actions_template = '<div class="btn-group" dropdown is-open="status.isopen">' +
+            '<button ng-click="doAction(row.entity, 0)" type="button" class="btn btn-default btn-xs" ng-disabled="disabled">' + scope.config.actions.items[0].name + '</button>' +
+            '<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown"><span class="caret"></span><span class="sr-only">Toggle Dropdown</span></button>' +
+            '<ul class="dropdown-menu pull-right" role="menu">' +
+            actions +
+            '</ul>' +
+            '</div>';
+        } else {
+          actions_template = '<button ng-click="doAction(row.entity, 0)" type="button" class="btn btn-default btn-xs">' + scope.config.actions.items[0].name + '</button>';
+        }
+        //If a header config was found, build the header.  Otherwise show nothing
+        header_template = (scope.config.actions.header) ? scope.build_header(scope.config.actions.header) : '';
+
+        //Add a column def for the actions
+        scope.gridConfig.columnDefs[scope.gridConfig.columnDefs.length] = {
+          width: (scope.config.actions.width || 100),
+          headerCellTemplate: '<div class="{{col.headerClass}}" ><div class="ngHeaderText">' + header_template + '</div></div>',
+          cellTemplate: '<div class="ngCellText" ng-class="col.colIndex()" style="cursor: pointer;">' + actions_template + '</div>'
+        };
       }
 
       //If we have an endpoint, enable external sorting
@@ -165,6 +229,20 @@ module.directive('propulsionGrid', ['$http', '$compile', '$templateCache', '$loc
             return true;
           }
           scope.clickAction(item, col.index);
+        }
+      };
+
+      //Our wrapper for the click action
+      scope.doAction = function (item, action) {
+        if (scope.config.actions !== undefined && scope.config.actions.items && scope.config.actions.items[action]) {
+          scope.config.actions.items[action].action(item);
+        }
+      };
+
+      //Our wrapper for the header Action
+      scope.doHeader = function () {
+        if (scope.config.actions !== undefined && scope.config.actions.header && scope.config.actions.header.action) {
+          scope.config.actions.header.action();
         }
       };
 

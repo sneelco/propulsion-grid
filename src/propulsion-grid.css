@@ -81,3 +81,10 @@
   text-align: right;
 }
 
+
+.ngCell {
+  overflow: visible !important;
+}
+.ngCellText {
+  overflow: visible !important;
+}

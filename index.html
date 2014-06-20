@@ -25,15 +25,34 @@
             $scope.selected = [];
             $scope.testData = [{name: 'testing'}, {name: 'hello'}, {name: 'world'}, {name: 'hello world'}, {name: 'hello solar system'}, {name: 'greetings'}, {name: 'grettings world'}, {name: 'greetings solar system'}, {name: 'hello galaxy'}, {name: 'greetings galaxy'}, {name: 'universe'}, {name: 'solar system'}, {name: 'hello universe'}, {name: 'grettings universe'}];
 
+            $scope.testAction = function(action) {
+              return function (obj) {
+                alert('Action: ' + action + '\n' + JSON.stringify(obj));
+              }
+            };
+
             $scope.gridConfig = {
               'query_prefix': 'test_',
+              'actions': {
+                'width': 80,
+                'header': {
+                  'title': 'Create',
+                  'action': $scope.testAction('Create')
+                },
+                'items': [
+                  {'name': 'View', 'action': $scope.testAction('View')},
+                  {'name': 'Edit', 'action': $scope.testAction('Edit')},
+                  {'name': ''},
+                  {'name': 'Delete', 'action': $scope.testAction('Delete')}
+                ]
+              },
               'grid': {
                 'showSelectionCheckbox': true
               }
             }
 
             $scope.processClick = function (row) {
-              alert(row);
+              alert(JSON.stringify(row));
             }
           });
         </script>
