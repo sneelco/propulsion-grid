@@ -41,6 +41,9 @@ module.directive('propulsionGrid', ['$http', '$compile', '$templateCache', '$loc
         rest_endpoint;
 
       //Set our configuration
+      scope.loading = true;
+      scope.done = false;
+      scope.error = false;
       scope.config = scope.gridconfig || {};
       scope.config.actions = scope.actions || scope.config.actions;
       scope.config.queryprefix = scope.queryPrefix || scope.config.queryprefix || '';
@@ -133,7 +136,7 @@ module.directive('propulsionGrid', ['$http', '$compile', '$templateCache', '$loc
         }
 
         return out;
-      }
+      };
 
       //If we have actions specified
       if (scope.config.actions) {
@@ -285,9 +288,22 @@ module.directive('propulsionGrid', ['$http', '$compile', '$templateCache', '$loc
         //Build the new endpoint with options
         rest_endpoint = $resource(endpoint_template, endpoint_options);
 
+        //Set the statuses
+        scope.loading = true;
+        scope.error = false;
+        scope.done = false;
+
         //Query the endpoint and process the results
         rest_endpoint.query(function (response, headers) {
+          scope.loading = false;
+          scope.error = false;
+          scope.done = true;
           scope.process_data(response, headers('total-count'));
+        }, function (error) {
+          console.dir(error);
+          scope.loading = false;
+          scope.error = true;
+          scope.loading = false;
         });
       };
 

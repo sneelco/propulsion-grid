@@ -14,8 +14,10 @@
     </div>
 		<div ng-show="has_endpoint" class="propulsion-grid propulsion-grid-pager"><pagination boundary-links="true" total-items="records_total" page="records_page" items-per-page="records_limit" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" max-size="pager_max_size"></pagination></div>
     <div ng-show="has_endpoint" class="propulsion-grid propulsion-grid-details">
-      <div>Displaying: {{records_start}}-{{records_end}} ({{records_total}})</div>
-      <div>Per Page: <select ng-model="records_limit" ng-options="size for size in pageSizes" ng-change="changePageSize()"></select></div>
+      <div ng-show="done">Displaying: {{records_start}}-{{records_end}} ({{records_total}})</div>
+      <div ng-show="loading"><span class="glyphicon glyphicon-repeat"></span> Loading Records</div>
+      <div ng-show="error"><span class="glyphicon glyphicon-exclamation-sign"></span> Problem Loading Records</div>
+      <div ng-show="done">Per Page: <select ng-model="records_limit" ng-options="size for size in pageSizes" ng-change="changePageSize()"></select></div>
     </div>
 	</div>
 	<div ng-grid="gridConfig" class="propulsion-grid propulsion-grid-nggrid" ng-class="{'propulsion-has-search': show_search, 'propulsion-external': has_endpoint}"></div>
